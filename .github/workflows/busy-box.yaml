@@ -28,13 +28,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Extract branch name from ref
-        id: extract_branch
-        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-
-      - name: Set Docker tag
+      - name: Set PR as Docker tag
         if: github.event_name == 'pull_request'
-        run: echo "DOCKER_TAG=${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
+        run: echo "DOCKER_TAG=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}" >> $GITHUB_ENV
 
       - name: Set Docker tag to 'latest'
         if: github.ref == 'refs/heads/main'
