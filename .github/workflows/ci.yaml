@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  gha-busy-box:
+    uses: ./.github/workflows/build.yml
+    with:
+      image-name: 13angs/gha-busy-box
+      context-path: ./samples/busy-box
+      dockerfile-path: ./samples/busy-box/Dockerfile
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  webhook:
+    uses: ./.github/workflows/build.yml
+    with:
+      image-name: 13angs/gha-webhook
+      context-path: ./samples/webhook
+      dockerfile-path: ./samples/webhook/Dockerfile
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
