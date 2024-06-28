@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  gha-busy-box:
+  busy-box:
     uses: ./.github/workflows/build.yml
     with:
       image-name: 13angs/gha-busy-box
