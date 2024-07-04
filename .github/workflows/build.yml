@@ -1,15 +1,25 @@
-name: gha-busy-box
+name: Build and Push
 
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      image-name:
+        required: true
+        type: string
+      context-path:
+        required: true
+        type: string
+      dockerfile-path:
+        required: true
+        type: string
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +30,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: 13angs/gha-busy-box
+          images: ${{ inputs.image-name }}
 
       - name: Login to Dockerhub
         uses: docker/login-action@v2
@@ -30,7 +40,7 @@ jobs:
 
       - name: Set PR as Docker tag
         if: github.event_name == 'pull_request'
-        run: echo "DOCKER_TAG=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}" >> $GITHUB_ENV
+        run: echo "DOCKER_TAG=${{ steps.meta.outputs.version }}" >> $GITHUB_ENV
 
       - name: Set Docker tag to 'latest'
         if: github.ref == 'refs/heads/main'
@@ -41,8 +51,8 @@ jobs:
         env:
           DOCKER_TAG: ${{ env.DOCKER_TAG }}
         with:
-          context: ./samples/gha-busy-box
-          file: ./samples/gha-busy-box/Dockerfile
+          context: ${{ inputs.context-path }}
+          file: ${{ inputs.dockerfile-path }}
           push: true
-          tags: 13angs/gha-busy-box:${{ env.DOCKER_TAG }}
+          tags: ${{ inputs.image-name }}:${{ env.DOCKER_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
