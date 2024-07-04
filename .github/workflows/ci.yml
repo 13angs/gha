@@ -16,7 +16,6 @@ on:
 
 jobs:
   busy-box:
-    if: contains(github.event.commits.*.modified, 'samples/busy-box/')
     uses: ./.github/workflows/build.yml
     with:
       image-name: 13angs/gha-busy-box
@@ -27,7 +26,6 @@ jobs:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
   webhook:
-    if: contains(github.event.commits.*.modified, 'samples/webhook/')
     uses: ./.github/workflows/build.yml
     with:
       image-name: 13angs/gha-webhook
