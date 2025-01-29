@@ -1,0 +1,24 @@
+name: Get Started with GitHub
+
+on:
+  workflow_dispatch:
+
+jobs:
+  echo-get-started:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Display Getting Started Message
+        run: |
+          echo "Welcome to GitHub!"
+          echo "To get started with GitHub:"
+          echo "1. Create a new repository using 'New Repository' in the GitHub UI."
+          echo "2. Clone your repository using 'git clone <repo_url>'."
+          echo "3. Create and modify files, then add them using 'git add <file>'."
+          echo "4. Commit changes using 'git commit -m \"Your commit message\"'."
+          echo "5. Push your changes using 'git push origin main'."
+          echo "6. Open a pull request (PR) to collaborate with your team."
+          echo "7. Merge PRs to integrate code changes into the main branch."
+          echo "For more details, visit: https://docs.github.com/en/get-started"
